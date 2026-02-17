@@ -1,110 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OTP Verification</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
 
-        .container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+    .main-container {
+      text-align: center;
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
-        #verification_heading {
-            margin-bottom: 10px;
-        }
+    #verification_heading {
+      margin-bottom: 10px;
+    }
 
-        #verification_subtext {
-            color: gray;
-            margin-bottom: 20px;
-        }
+    #verification_subtext {
+      margin-bottom: 20px;
+      color: gray;
+    }
 
-        .code-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
+    .code-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
 
-        .code {
-            width: 45px;
-            height: 55px;
-            font-size: 24px;
-            text-align: center;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            outline: none;
-        }
+    .code {
+      width: 50px;
+      height: 60px;
+      font-size: 24px;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      outline: none;
+    }
 
-        .code:focus {
-            border-color: #4CAF50;
-        }
-    </style>
+    .code:focus {
+      border-color: #4CAF50;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container">
+  <div class="main-container">
     <h1 id="verification_heading">Verify Your Account</h1>
+
     <p id="verification_subtext">
-        We emailed you the six digit code to verify your account.
+      Please enter the 6-digit OTP sent to your registered email.
     </p>
 
     <div class="code-container">
-        <input type="text" maxlength="1" class="code">
-        <input type="text" maxlength="1" class="code">
-        <input type="text" maxlength="1" class="code">
-        <input type="text" maxlength="1" class="code">
-        <input type="text" maxlength="1" class="code">
-        <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
+      <input type="text" maxlength="1" class="code">
     </div>
-</div>
+  </div>
 
-<script>
-    const codes = document.querySelectorAll('.code');
+  <script>
+    const inputs = document.querySelectorAll(".code");
 
-    codes[0].focus();
+    // Focus first input on load
+    window.addEventListener("load", () => {
+      inputs[0].focus();
+    });
 
-    codes.forEach((code, index) => {
+    inputs.forEach((input, index) => {
 
-        // Move forward when typing
-        code.addEventListener('input', (e) => {
-            if (e.target.value.length === 1) {
-                if (index < codes.length - 1) {
-                    codes[index + 1].focus();
-                }
-            }
-        });
+      // Allow only numbers
+      input.addEventListener("input", (e) => {
+        let value = e.target.value;
 
-        // Handle backspace
-        code.addEventListener('keydown', (e) => {
-            if (e.key === "Backspace") {
+        // Remove non-digits
+        value = value.replace(/[^0-9]/g, '');
+        e.target.value = value;
 
-                if (code.value === "" && index > 0) {
-                    codes[index - 1].focus();
-                } else {
-                    code.value = "";
-                }
-            }
-        });
+        // Move to next field if value entered
+        if (value && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
 
-        // Allow only digits
-        code.addEventListener('keypress', (e) => {
-            if (!/[0-9]/.test(e.key)) {
-                e.preventDefault();
-            }
-        });
+      // Backspace behavior
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace") {
+
+          if (input.value === "" && index > 0) {
+            inputs[index - 1].focus();
+            inputs[index - 1].value = "";
+          }
+        }
+      });
+
+      // Auto select existing value when focused
+      input.addEventListener("focus", () => {
+        input.select();
+      });
 
     });
-</script>
+  </script>
 
 </body>
 </html>
