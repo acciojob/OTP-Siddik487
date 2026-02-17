@@ -5,12 +5,19 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f6f8;
-            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         #verification_heading {
@@ -18,77 +25,86 @@
         }
 
         #verification_subtext {
+            color: gray;
             margin-bottom: 20px;
-            color: #555;
-            text-align: center;
-            max-width: 400px;
         }
 
         .code-container {
             display: flex;
+            justify-content: center;
             gap: 10px;
         }
 
         .code {
             width: 45px;
-            height: 50px;
-            text-align: center;
+            height: 55px;
             font-size: 24px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 6px;
             outline: none;
         }
 
         .code:focus {
-            border-color: #4a90e2;
+            border-color: #4CAF50;
         }
     </style>
 </head>
 <body>
 
-    <h2 id="verification_heading">Verify Your Account</h2>
+<div class="container">
+    <h1 id="verification_heading">Verify Your Account</h1>
     <p id="verification_subtext">
-        We emailed you the six digit code to your registered email address.
-        Enter the code below to confirm your account.
+        We emailed you the six digit code to verify your account.
     </p>
 
     <div class="code-container">
-        <input type="text" maxlength="1" class="code" />
-        <input type="text" maxlength="1" class="code" />
-        <input type="text" maxlength="1" class="code" />
-        <input type="text" maxlength="1" class="code" />
-        <input type="text" maxlength="1" class="code" />
-        <input type="text" maxlength="1" class="code" />
+        <input type="text" maxlength="1" class="code">
+        <input type="text" maxlength="1" class="code">
+        <input type="text" maxlength="1" class="code">
+        <input type="text" maxlength="1" class="code">
+        <input type="text" maxlength="1" class="code">
+        <input type="text" maxlength="1" class="code">
     </div>
+</div>
 
-    <script>
-        const codes = document.querySelectorAll(".code");
+<script>
+    const codes = document.querySelectorAll('.code');
 
-        codes[0].focus();
+    codes[0].focus();
 
-        codes.forEach((code, index) => {
+    codes.forEach((code, index) => {
 
-            // Move forward when typing
-            code.addEventListener("input", (e) => {
-                if (e.target.value.length === 1) {
-                    if (index < codes.length - 1) {
-                        codes[index + 1].focus();
-                    }
+        // Move forward when typing
+        code.addEventListener('input', (e) => {
+            if (e.target.value.length === 1) {
+                if (index < codes.length - 1) {
+                    codes[index + 1].focus();
                 }
-            });
-
-            // Handle backspace
-            code.addEventListener("keydown", (e) => {
-                if (e.key === "Backspace") {
-                    if (code.value === "" && index > 0) {
-                        codes[index - 1].focus();
-                        codes[index - 1].value = "";
-                    }
-                }
-            });
-
+            }
         });
-    </script>
+
+        // Handle backspace
+        code.addEventListener('keydown', (e) => {
+            if (e.key === "Backspace") {
+
+                if (code.value === "" && index > 0) {
+                    codes[index - 1].focus();
+                } else {
+                    code.value = "";
+                }
+            }
+        });
+
+        // Allow only digits
+        code.addEventListener('keypress', (e) => {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+    });
+</script>
 
 </body>
 </html>
